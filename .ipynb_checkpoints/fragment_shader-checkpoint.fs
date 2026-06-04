@@ -84,7 +84,7 @@ void main()
 
     if (luzSolLigada && recebeSol)
     {
-        resultado += 1.8 * calculaLuzPontual(
+        resultado += calculaLuzPontual(
             solPos,
             solColor,
             norm,

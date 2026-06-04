@@ -79,13 +79,7 @@ O usuário pode interagir com o cenário por meio do teclado e do mouse:
   ← (seta esquerda) → move os guardas para trás
   R → reseta a posição dos guardas
 
-  1 → liga/desliga sol
-  2 → liga/desliga fogueira
-  3 → liga/desliga luz ambiente
-  Z → diminui ambiente
-  X → aumenta ambiente
-  C → diminui reflexão difusa  
-  B → aumenta reflexão difusa
+---
 
 ## 🔄 Transformações
 
