@@ -32,6 +32,16 @@ uniform float materialDiffuse;
 uniform float materialSpecular;
 uniform float materialShininess;
 
+uniform bool recebeFilosofia;
+uniform bool luzFilosofiaLigada;
+
+uniform vec3 filosofiaPos;
+uniform vec3 filosofiaDir;
+uniform vec3 filosofiaColor;
+
+uniform float intensidadeFilosofia;
+uniform float especularGlobal;
+
 vec3 calculaLuzPontual(
     vec3 lightPos,
     vec3 lightColor,
@@ -52,9 +62,46 @@ vec3 calculaLuzPontual(
     float attenuation = 1.0 / (1.0 + 0.03 * distance + 0.004 * distance * distance);
 
     vec3 diffuse = lightColor * diff * materialDiffuse * difusaGlobal * baseColor;
-    vec3 specular = lightColor * spec * materialSpecular;
-
+    vec3 specular = lightColor * spec * materialSpecular * especularGlobal;
+    
     return (diffuse + specular) * attenuation;
+}
+
+vec3 calculaLuzSpot(
+    vec3 lightPos,
+    vec3 lightDir,
+    vec3 lightColor,
+    vec3 normal,
+    vec3 fragPos,
+    vec3 viewDir,
+    vec3 baseColor
+)
+{
+    vec3 fragToLight = normalize(lightPos - fragPos);
+    vec3 lightToFrag = normalize(fragPos - lightPos);
+
+    float theta = dot(lightToFrag, normalize(lightDir));
+
+    float innerCutOff = cos(radians(10.0));
+    float outerCutOff = cos(radians(22.0));
+
+    float epsilon = innerCutOff - outerCutOff;
+    float spot = clamp((theta - outerCutOff) / epsilon, 0.0, 1.0);
+
+    float diff = max(dot(normal, fragToLight), 0.0);
+
+    vec3 reflectDir = reflect(-fragToLight, normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), materialShininess);
+
+    float distance = length(lightPos - fragPos);
+    float attenuation = 1.0 / (1.0 + 0.04 * distance + 0.01 * distance * distance);
+
+    vec3 diffuse = lightColor * diff * materialDiffuse * difusaGlobal * baseColor;
+    vec3 specular = lightColor * spec * materialSpecular * especularGlobal;
+
+    vec3 luzIndiretaDoFeixe = 0.08 * lightColor * baseColor;
+
+    return (diffuse + specular + luzIndiretaDoFeixe) * attenuation * spot;
 }
 
 void main()
@@ -99,6 +146,19 @@ void main()
         resultado += calculaLuzPontual(
             fogoPos,
             vec3(1.0, 0.35, 0.05),
+            norm,
+            FragPos,
+            viewDir,
+            baseColor
+        );
+    }
+
+    if (luzFilosofiaLigada && recebeFilosofia)
+    {
+        resultado += intensidadeFilosofia * calculaLuzSpot(
+            filosofiaPos,
+            filosofiaDir,
+            filosofiaColor,
             norm,
             FragPos,
             viewDir,
