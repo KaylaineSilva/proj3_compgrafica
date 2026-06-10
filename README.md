@@ -37,16 +37,16 @@ A cena é dividida em dois ambientes principais.
 
 ### Variações do Ambiente Externo
 
-#### Céu diurno
-
-<p align="center">
-  <img src="images/cena_azul.png" width="700">
-</p>
-
 #### Nascer do sol
 
 <p align="center">
   <img src="images/cena_nascer.png" width="700">
+</p>
+
+#### Céu diurno
+
+<p align="center">
+  <img src="images/cena_azul.png" width="700">
 </p>
 
 #### Pôr do sol
@@ -230,7 +230,7 @@ Modelos presentes na cena:
 * Palmeira;
 * Rocha;
 * Concha;
-* Sol.aaaaaaaaaaaaa
+* Sol.
 ---
 
 ## 🎮 Controles
