@@ -5,7 +5,7 @@ in vec3 FragPos;
 in vec3 Normal;
 
 out vec4 fragColor;
-
+uniform bool desenhandoSombra;
 uniform sampler2D samplerTexture;
 uniform bool usa_textura;
 
@@ -106,6 +106,12 @@ vec3 calculaLuzSpot(
 
 void main()
 {
+    if (desenhandoSombra)
+    {
+        fragColor = vec4(0.0, 0.0, 0.0, 0.65);
+        return;
+    }
+
     vec3 baseColor;
 
     if (usa_textura)
